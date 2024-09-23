@@ -127,15 +127,15 @@ int main()
     //printf("\n");
     while (i)//保证一直进行
     {
-        printf("当前的顺序表如下： ");
-        Display_SeqList(&L);
-        printf("\n");
-        printf("    Main Menu         \n");
         printf("1：查找指定元素    \n");
         printf("2：插入元素到指定位置   \n");
         printf("3：删除某一指定位置元素   \n");
         printf("4：清屏   \n");
         printf("0：退出程序      \n");
+        printf("\n");
+        printf("当前的顺序表如下： ");
+        printf("\n");
+        Display_SeqList(&L);
         printf("\n");
         printf("请输入你选择的菜单号<1, 2, 3, 0>:\n");
         scanf_s("%d", &i);
