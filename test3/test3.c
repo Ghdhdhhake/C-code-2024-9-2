@@ -79,51 +79,38 @@ void search_1(Node* head) {
 }
 //插入学生信息
 void insert(Node* head) {
-	LinkList p, q, temp;
+	LinkList p, s;
 	p = head;
-	q = NULL;
-	q = (LinkList)malloc(sizeof(Node));
-	int a, i = 0;
+	
+	int a, j;
+	j = 1;
 	printf("请输入你要插入的位置：");
 	scanf("%d", &a);
-	if (q == NULL) {
-		printf("内存分配失败！\n");
-		return;
-	}
-	while (p != NULL && i < a - 1) {
-		q = p;
+	while (p != NULL && j < a - 1) 
+	{
 		p = p->next;
-		i++;
+		j++;
 	}
-	printf("学号：");
-	scanf("%14s", q->data.xuehao);  // 限制输入长度以防止缓冲区溢出  
-
-	// 检查学号是否重复（简单实现：遍历从head到prev的节点）  
-	temp = head;
-	while (temp != q && strcmp(temp->data.xuehao, q->data.xuehao) != 0) {
-		temp = temp->next;
-	}
-	if (temp != q) {
-		printf("该学号已被使用！\n");
-		free(q);
+	if ( j != a - 1)
+	{
+		printf("Error\n");
 		return;
 	}
-
+	s = (LinkList)malloc(sizeof(Node));
+	printf("学号：");
+	scanf("%14s", s->data.xuehao);  
 	printf("姓名：");
-	scanf("%20s", q->data.name); 
+	scanf("%20s", s->data.name); 
 	printf("性别：");
-	scanf("%d", &q->data.sex);
+	scanf("%d", &s->data.sex);
 	printf("电话：");
-	scanf("%14s", q->data.tel);  // 限制输入长度  
+	scanf("%14s", s->data.tel);  
 	printf("QQ：");
-	scanf("%12s", q->data.qq);  // 限制输入长度  
+	scanf("%12s", s->data.qq);    
 
 	// 插入新节点  
-	q->next = q->next;
-	q->next = q;
-	if (q == NULL) {
-		temp = q;  // 插入到链表头部的情况  
-	}
+	s->next = p->next;
+	p->next = s;
 	printf("插入成功！\n");
 }
 //修改学生信息
@@ -194,7 +181,7 @@ int main() {
 	printf("1--------输入学生信息------------\n");
 	printf("2--------查询所有学生信息--------\n");
 	printf("3--------查询某个学生信息--------\n");
-	printf("4--------添加学生信息------------\n");
+	printf("4--------插入学生信息------------\n");
 	printf("5--------修改学生信息------------\n");
 	printf("6--------删除学生信息------------\n");
 	printf("7--------退出--------------------\n");
