@@ -86,12 +86,12 @@ void insert(Node* head) {
 	j = 1;
 	printf("请输入你要插入的位置：");
 	scanf("%d", &a);
-	while (p != NULL && j < a - 1) 
+	while (p  && j < a) 
 	{
 		p = p->next;
 		j++;
 	}
-	if ( j != a - 1)
+	if ( j != a)
 	{
 		printf("Error\n");
 		return;
