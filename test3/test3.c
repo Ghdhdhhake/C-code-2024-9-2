@@ -49,7 +49,7 @@ void out(Node* head) {
 	LinkList p;
 	p = head;
 	printf("----------------学生信息表---------------\n");
-	printf("学号\t姓名\t性别\t手机号码\tQQ号\n");
+	printf("学号\t姓名\t性别\t手机号码\t\tQQ号\n");
 	while (p->next != NULL) {
 		p = p->next;
 		printf("%s\t%s\t%d\t%s\t\t%s\n", p->data.xuehao, p->data.name, p->data.sex, p->data.tel, p->data.qq);
@@ -65,12 +65,12 @@ void search_1(Node* head) {
 	printf("请输入查询学生学号：");
 	scanf_s("%s", a, 14);
 	printf("----------------学生信息表---------------\n");
-	printf("学号\t姓名\t性别\t年龄\t联系方式\n");
+	printf("学号\t姓名\t性别\t手机号码\t\tQQ\n");
 	while (p->next != NULL) {
 		p = p->next;
 		if (strcmp(p->data.xuehao, a) == 0) {
 			f = 1;
-			printf("%s\t%s\t%d\t%s\t%s\n", p->data.xuehao, p->data.name, p->data.sex, p->data.tel, p->data.qq);
+			printf("%s\t%s\t%d\t%s\t\t%s\n", p->data.xuehao, p->data.name, p->data.sex, p->data.tel, p->data.qq);
 		}
 	}
 	if (f == 0) {
