@@ -13,7 +13,7 @@ typedef struct {
 
 // 初始化顺序串
 void InitSeqString(SeqString* ss, const char* str) {
-    strncpy(ss->data, str, MAXLEN - 1); // 复制字符串到顺序串的数据部分
+    strncpy(ss->data, str, MAXLEN - 1); // 复制str的字符到ss中
     ss->length = strlen(str);          // 设置顺序串的长度
     ss->data[ss->length] = '\0';       // 确保字符串以空字符结尾
 }
@@ -29,7 +29,7 @@ void InsertSeqString(SeqString* ss, const char* str, int pos) {
         // 移动原始字符串以留出空间
         memmove(&ss->data[pos + strlen(str)], &ss->data[pos], ss->length - pos + 1);
         // 插入新字符串
-        memcpy(&ss->data[pos], str, strlen(str));
+        memcpy(&ss->data[pos], str, strlen(str));//复制str字符到ss中
         // 更新长度
         ss->length += strlen(str);
         // 确保字符串以空字符结尾
