@@ -8,7 +8,7 @@
 
 typedef struct {
     char ch;
-    int weight; // 权值
+    int weight; // 权值(频率)
     int parent;
     int left;
     int right;
@@ -32,13 +32,13 @@ void initHt() {
         printf("无法打开文件character.txt");
         exit(0);
     }
-
+    //初始化所有结点
     for (i = 0; i < MAXNUM * 2; i++) {
         ht[i].left = ht[i].right = ht[i].parent = -1;
         ht[i].ch = '\0'; // 初始化 ch 为无效字符
         ht[i].weight = 0; // 初始化 weight 为 0
     }
-
+    //读取字符及其权重
     i = 0;
     while (fscanf(fp, " %c %d", &ht[i].ch, &ht[i].weight) == 2) {
         i++;
@@ -55,11 +55,11 @@ void createHuffTree() {
     int i = 0, k;
     int minI, minJ;
     int f = 0;
-    minI = minJ = -1; // minI < minJ
+    minI = minJ = -1; // minI < minJ，初始化最小结点索引
     for (k = n; k < 2 * n - 1; k++) {
         minI = minJ = -1;
         for (i = 0; i < k; i++) {
-            if (ht[i].parent == -1) {
+            if (ht[i].parent == -1) {//找到未被使用的结点
                 if (minI == -1 || ht[i].weight < ht[minI].weight) {
                     minJ = minI;
                     minI = i;
@@ -70,16 +70,16 @@ void createHuffTree() {
             }
         }
         if (minI != -1 && minJ != -1) {
-            ht[k].ch = '#';
+            ht[k].ch = '#';//断点字符
             ht[k].left = minI;
             ht[k].right = minJ;
-            ht[k].weight = ht[minI].weight + ht[minJ].weight;
-            ht[k].parent = -1;
-            ht[minI].parent = ht[minJ].parent = k;
+            ht[k].weight = ht[minI].weight + ht[minJ].weight;//设置新结点权重
+            ht[k].parent = -1;//新结点无父节点
+            ht[minI].parent = ht[minJ].parent = k;//更新最小结点父节点
         }
     }
 }
-
+//字符串反转
 void reverse(char* str) {
     int i, j;
     char ch;
@@ -96,19 +96,19 @@ void createHuffCode() {
     for (i = 0; i < n; i++) {
         length = 0;
         j = i;
-        while (ht[j].parent != -1) {
+        while (ht[j].parent != -1) {//从叶子结点遍历到根节点
             if (ht[ht[j].parent].left == j) {
-                hcd[i].code[length++] = '0';
+                hcd[i].code[length++] = '0';//左分支编码0
             }
             else {
-                hcd[i].code[length++] = '1';
+                hcd[i].code[length++] = '1';//右分支编码为1
             }
             j = ht[j].parent;
         }
-        hcd[i].code[length] = '\0';
-        reverse(hcd[i].code);
+        hcd[i].code[length] = '\0';//结束字符串
+        reverse(hcd[i].code);//反转字符串编码
     }
-
+    //存储编码结果
     if ((fp = fopen("code.txt", "w")) == NULL) {
         printf("无法打开文件code.txt");
         exit(0);
@@ -129,9 +129,9 @@ int releaseHuffCode(char* str, char* code) {
 
     while (code[i]) {
         if (code[i] == '0')
-            currentRoot = ht[currentRoot].left;
+            currentRoot = ht[currentRoot].left;//左分支移动
         else if (code[i] == '1')
-            currentRoot = ht[currentRoot].right;
+            currentRoot = ht[currentRoot].right;//右分支移动
         else
             return 0; // 非法字符
 
@@ -139,12 +139,12 @@ int releaseHuffCode(char* str, char* code) {
             return 0;
 
         if (ht[currentRoot].left == -1 && ht[currentRoot].right == -1) {
-            str[length++] = ht[currentRoot].ch;
+            str[length++] = ht[currentRoot].ch;//找到叶子节点
             currentRoot = root; // 重置当前根节点
         }
         i++;
     }
-    str[length] = '\0';
+    str[length] = '\0';//结束字符串
 
     if (currentRoot == root) // 检查是否回到根节点
         return 1;
@@ -199,9 +199,9 @@ void decode() {
 
 int main() {
     int choice = 1;
-    initHt();
-    createHuffTree();
-    createHuffCode();
+    initHt();//初始化哈夫曼树
+    createHuffTree();//构建哈夫曼树
+    createHuffCode();//生成哈夫曼编码
     while (choice) {
         system("cls");
         printf("在character.txt文件中存放着各个字母的权值\n");
