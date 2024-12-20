@@ -190,38 +190,7 @@ BinTree Parent(BinTree bt, char NodeName)
 	}
 	return NULL;
 }
-//BinTree Parent(BinTree bt, char NodeName) 
-//{
-//	if (bt == NULL) {
-//		return NULL;  // 树为空，直接返回NULL
-//	}
-//
-//	if (bt->elem == NodeName) {
-//		printf("%c结点为根结点\n", NodeName);
-//		return NULL;  // 当前节点是目标节点且为根节点
-//	}
-//
-//	if ((bt->lchild != NULL && bt->lchild->elem == NodeName) ||
-//		(bt->rchild != NULL && bt->rchild->elem == NodeName)) {
-//		return bt;  // 当前节点是目标节点的父节点
-//	}
-//
-//	// 递归查找左子树
-//	BTNode* tempP = Parent(bt->lchild, NodeName);
-//	if (tempP != NULL) {
-//		return tempP;
-//	}
-//
-//	// 递归查找右子树
-//	tempP = Parent(bt->rchild, NodeName);
-//	if (tempP != NULL) {
-//		return tempP;
-//	}
-//
-//	return NULL;  // 没有找到目标节点
-//}
-// 
-//查找某个结点
+
 BinTree Search(BinTree bt, char NodeName)
 {
 	BinTree p;
