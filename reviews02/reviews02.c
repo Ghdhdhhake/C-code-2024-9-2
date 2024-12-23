@@ -1,121 +1,160 @@
 #define  _CRT_SECURE_NO_WARNINGS
-//顺序表
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
-#define MaxSize 20
-typedef int ElemType;
+typedef struct Node {
+    int data;
+    struct Node* next;
+} Node, * LinkList;
 
-typedef struct Seqlist{
-	ElemType data[MaxSize];
-	int length;
-}SeqList;
-
-
-int initSeqList(SeqList* L)
-{
-	L->length = 0;//初始化顺序表，表长为0
-	return 1;
+// 创建链表（使用尾插法）
+void CreateList(LinkList* L, int n) {
+    LinkList p, tail;
+    int i;
+    srand(time(0));
+    *L = (LinkList)malloc(sizeof(Node));
+    (*L)->next = NULL;
+    tail = *L;
+    for (i = 0; i < n; i++) {
+        p = (LinkList)malloc(sizeof(Node));
+        p->data = rand() % 100 + 1;
+        p->next = NULL;
+        tail->next = p;
+        tail = p;
+    }
 }
 
-int LocateSeqList(SeqList* L, int x)
-{
-	int i;
-	for (i = 0; i < L->length && L->data[i] != x; i++);
-	if (i >= L->length)
-	{
-		puts("顺序表不存在该元素");
-	}
-	return i + 1;
+// 读取单链表元素
+int GetElem(LinkList L, int i, int* e) {
+    int j = 1;
+    LinkList p = L->next;
+    while (p && j < i) {
+        p = p->next;
+        ++j;
+    }
+    if (!p || j > i)
+        return 0;
+    *e = p->data;
+    return 1;
 }
 
-int InsertSeqList(SeqList * L, int post, int elem)
-{
-	int i = 0;
-	if (L->length > MaxSize)
-	{
-		printf("顺序表已满，无法插入");
-		return 0;
-	}
-	else if(post < 0 || post > L->length + 1) 
-	{
-		printf("插入位置错误");
-		return 0;
-	}
-	for (int i = L->length - 1; i > post - 1; i--)
-	{
-		L->data[i + 1] = L->data[i];
-	}
-
-	L->data[i - 1] = elem;
-	L->length++;
-	return 1;
+// 插入元素到单链表
+int InsertList(LinkList* L, int i, int e) {
+    int j = 1;
+    LinkList s, p = *L;
+    while (p && j < i) {
+        p = p->next;
+        ++j;
+    }
+    if (!p || j > i)
+        return 0;
+    s = (LinkList)malloc(sizeof(Node));
+    if (!s) {
+        printf("内存分配失败\n");
+        return 0;
+    }
+    s->data = e;
+    s->next = p->next;
+    p->next = s;
+    return 1;
 }
-//删除顺序表中的元素
-int DeletSeqList(SeqList* L, int post)
-{
-	if ((post < 1) || (post > L->length))
-	{
-		printf("输入删除的位置错误！");
-		return 0;
-	}
-	for (int i = post; i < L->length; i++)//用后一个元素覆盖前一个元素
-	{
-		L->data[i - 1] = L->data[i];
-	}
-	L->length--;
-	return 1;
+
+// 删除单链表元素
+int DeleteList(LinkList* L, int i, int* e) {
+    int j = 1;
+    LinkList q, p = *L;
+    while (p->next && j < i) {
+        p = p->next;
+        ++j;
+    }
+    if (!p->next || j > i) {
+        return 0;
+    }
+    q = p->next;
+    p->next = q->next;
+    *e = q->data;
+    free(q);
+    return 1;
 }
-//打印线性表
-void DisplaySeqList(SeqList* L)
-{
-	int i;
-	printf("顺序表的元素有:\n");
-	for (i = 0; i < L->length; i++)
-	{
-		printf("%d ", L->data[i]);
-	}
+
+// 显示链表
+void DisplayList(LinkList L) {
+    LinkList p = L->next;
+    printf("链表元素为：");
+    while (p != NULL) {
+        printf("%d ", p->data);
+        p = p->next;
+    }
+    printf("\n");
 }
-void main()
+//链表逆置
+void ReverseList(LinkList L)
 {
-	SeqList L;
-	ElemType x;
-	int i = 1,  post, choice = 0, elem;
-	initSeqList(&L);
+    LinkList p, s;
+    p = L->next;
+    L->next = NULL;
+    while (p) 
+    {
+        s = p;
+        p = p->next;
+        s->next = L->next;
+        L->next = s;
+    }
+}
+//查找
+//int GetNUm(LinkList L, int post, int x)
+//{
+//    LinkList p;
+//    p = L->next;
+//    int j = 1; 
+//    while (p && j > post)
+//    {
+//        p = p->next;
+//        ++j;
+//    }
+//    while (!p || j > post) return 0;
+//    x = p->data;
+//    return 1;
+//}
+// 释放链表
+void FreeList(LinkList* L) {
+    LinkList p, q;
+    p = *L;
+    while (p != NULL) {
+        q = p;
+        p = p->next;
+        free(q);
+    }
+    *L = NULL; // 确保指针置空
+}
 
-	InsertSeqList(&L, 1, 3);
-	InsertSeqList(&L, 2, 6);
-	InsertSeqList(&L, 3, 9);
-	InsertSeqList(&L, 4, 0);
-	InsertSeqList(&L, 5, -2);
-	InsertSeqList(&L, 6, 89);
-	InsertSeqList(&L, 7, 77);
+// 主函数演示
+int main() {
+    LinkList L;
+    int n, pos, value, elem;
 
-	printf("**********************");
-	printf("****1:查找元素位置*****");
-	printf("****2:插入元素*********");
-	printf("****3:删除元素*********");
-	printf("****4:退出************");
-	while (1)
-	{
-		printf("请输入序号：");
-		scanf("%d", &choice);
-		switch (choice)
-		{
-			case 1:
-				printf("请输入你需要查找的元素位置：\n");
-				scanf("%d", &post);
-				i = LocateSeqList(&L, post);
-				printf("你需要查找的元素在第%d位", i);
-				i = 1;
-				post = 1;
-			case 2:
-				printf("请输入你要插入的元素及其位置：\n");
-				scanf("%d %d", &elem,&post);
-				InsertSeqList(&L, post, elem);
-				DisplaySeqList(&L);
-		}
+    CreateList(&L, 5); // 创建有5个随机数的链表
+    DisplayList(L);
 
-	}
+    pos = 3;
+    GetElem(L, pos, &elem);
+    printf("位置%d的元素是：%d\n", pos, elem);
+  
+    pos = 2;
+    value = 100;
+    InsertList(&L, pos, value);
+    printf("成功在位置%d插入元素%d\n", pos, value);
+    DisplayList(L);
+  
+    pos = 4;
+    DeleteList(&L, pos, &elem);
+    printf("成功删除位置%d的元素%d\n", pos, elem);
+    DisplayList(L);
+    printf("链表逆置结果为\n");
+    ReverseList(L);
+    DisplayList(L);
+    FreeList(&L);
 
+    return 0;
 }
