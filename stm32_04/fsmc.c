@@ -1,48 +1,19 @@
-/* USER CODE BEGIN Header */
-/**
-  ******************************************************************************
-  * File Name          : FSMC.c
-  * Description        : This file provides code for the configuration
-  *                      of the FSMC peripheral.
-  ******************************************************************************
-  * @attention
-  *
-  * Copyright (c) 2024 STMicroelectronics.
-  * All rights reserved.
-  *
-  * This software is licensed under terms that can be found in the LICENSE file
-  * in the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
-  *
-  ******************************************************************************
-  */
-/* USER CODE END Header */
 
-/* Includes ------------------------------------------------------------------*/
 #include "fsmc.h"
 
-/* USER CODE BEGIN 0 */
 
-/* USER CODE END 0 */
 
 SRAM_HandleTypeDef hsram4;
 
-/* FSMC initialization function */
+
 void MX_FSMC_Init(void)
 {
-  /* USER CODE BEGIN FSMC_Init 0 */
 
-  /* USER CODE END FSMC_Init 0 */
 
   FSMC_NORSRAM_TimingTypeDef Timing = {0};
   FSMC_NORSRAM_TimingTypeDef ExtTiming = {0};
 
-  /* USER CODE BEGIN FSMC_Init 1 */
 
-  /* USER CODE END FSMC_Init 1 */
-
-  /** Perform the SRAM4 memory initialization sequence
-  */
   hsram4.Instance = FSMC_NORSRAM_DEVICE;
   hsram4.Extended = FSMC_NORSRAM_EXTENDED_DEVICE;
   /* hsram4.Init */
@@ -86,17 +57,13 @@ void MX_FSMC_Init(void)
 
   __HAL_AFIO_FSMCNADV_DISCONNECTED();
 
-  /* USER CODE BEGIN FSMC_Init 2 */
 
-  /* USER CODE END FSMC_Init 2 */
 }
 
 static uint32_t FSMC_Initialized = 0;
 
 static void HAL_FSMC_MspInit(void){
-  /* USER CODE BEGIN FSMC_MspInit 0 */
 
-  /* USER CODE END FSMC_MspInit 0 */
   GPIO_InitTypeDef GPIO_InitStruct = {0};
   if (FSMC_Initialized) {
     return;
